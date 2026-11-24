@@ -1,0 +1,162 @@
+/* RED FLAG — visual effects layer (owned by Visuals) */
+#scene-root { position: fixed; inset: 0; z-index: 0; overflow: hidden; background: #05070f; }
+#scene-root canvas { display: block; width: 100%; height: 100%; }
+#fx-root { position: fixed; inset: 0; z-index: 50; pointer-events: none; overflow: hidden; }
+#fx-root > * { position: absolute; }
+
+/* ---------- CRT overlay ---------- */
+#crt-overlay {
+  position: fixed; inset: 0; z-index: 100; pointer-events: none;
+  background:
+    repeating-linear-gradient(to bottom, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 2px, rgba(0,0,0,.16) 3px, rgba(0,0,0,0) 4px),
+    radial-gradient(ellipse 120% 95% at 50% 50%, rgba(0,0,0,0) 58%, rgba(2,3,10,.55) 88%, rgba(0,0,0,.85) 100%);
+  mix-blend-mode: normal;
+}
+#crt-overlay::before {
+  content: ''; position: absolute; inset: 0;
+  background: repeating-linear-gradient(90deg, rgba(255,43,214,.025) 0 1px, rgba(25,240,255,.025) 1px 2px, rgba(0,0,0,0) 2px 3px);
+}
+#crt-overlay::after {
+  content: ''; position: absolute; inset: 0; background: rgba(160,200,255,.018);
+  animation: crt-flicker 6s infinite steps(1);
+}
+@keyframes crt-flicker {
+  0%, 100% { opacity: .5; } 7% { opacity: .9; } 8% { opacity: .3; } 31% { opacity: .7; }
+  52% { opacity: .4; } 53% { opacity: 1; } 54% { opacity: .5; } 78% { opacity: .8; }
+}
+
+/* ---------- Stamps ---------- */
+.fx-stamp { filter: drop-shadow(0 24px 18px rgba(0,0,0,.6)); will-change: transform; z-index: 3; }
+.fx-stamp svg { width: 100%; height: auto; display: block; overflow: visible; }
+.fx-stamp-shadow { height: 26px; border-radius: 50%; background: radial-gradient(closest-side, rgba(0,0,0,.65), rgba(0,0,0,0)); z-index: 2; }
+.fx-ink-impression { position: absolute; pointer-events: none; z-index: 20; opacity: .92; }
+.fx-ink-impression svg { width: 100%; height: auto; display: block; }
+.fx-ink-impression.fx-ink-approve { filter: drop-shadow(0 0 6px rgba(31,224,138,.35)); }
+.fx-ink-impression.fx-ink-detain { filter: drop-shadow(0 0 6px rgba(255,46,77,.4)); }
+.fx-ink-impression.fx-ink-audit { filter: drop-shadow(0 0 6px rgba(255,176,32,.35)); }
+.fx-ink-drop { border-radius: 50% 45% 55% 50%; margin: -4px 0 0 -4px; opacity: .95; z-index: 2; }
+
+/* ---------- Popups & combo ---------- */
+.fx-popup {
+  font-family: 'Orbitron', 'Share Tech Mono', monospace; font-weight: 900; font-size: clamp(18px, 2.4vh, 30px);
+  transform: translate(-50%, -50%); white-space: nowrap; letter-spacing: .06em;
+  text-shadow: 0 0 6px var(--glow, #2bff9a), 0 0 18px var(--glow, #2bff9a), 0 2px 0 #000;
+}
+.fx-combo {
+  left: 50%; top: 30%; translate: -50% -50%; text-align: center; white-space: nowrap;
+  font-family: 'Orbitron', sans-serif; font-weight: 900; color: #fff; z-index: 5;
+  text-shadow: 0 0 4px #fff, 0 0 12px var(--glow), 0 0 28px var(--glow), 0 0 60px var(--glow);
+}
+.fx-combo-word { display: block; font-size: clamp(22px, 3.6vh, 40px); letter-spacing: .35em; color: var(--glow); }
+.fx-combo-x { display: block; font-size: clamp(54px, 10vh, 120px); line-height: .9; font-style: italic; }
+.fx-combo-ring {
+  left: 50%; top: 30%; width: 180px; height: 180px; margin: -90px 0 0 -90px; border-radius: 50%;
+  border: 3px solid var(--glow); box-shadow: 0 0 20px var(--glow), inset 0 0 20px var(--glow);
+}
+
+/* ---------- Alarm ---------- */
+.fx-alarm { inset: 0; z-index: 6; }
+.fx-alarm-vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(255,0,40,0) 35%, rgba(255,20,60,.35) 75%, rgba(255,0,40,.7) 100%); }
+.fx-alarm-bar {
+  position: absolute; top: 0; bottom: 0; left: 0; width: 100%;
+  background: linear-gradient(90deg, rgba(255,51,85,0) 0%, rgba(255,51,85,.0) 30%, rgba(255,51,85,.45) 48%, rgba(255,220,230,.65) 50%, rgba(255,51,85,.45) 52%, rgba(255,51,85,0) 70%);
+  mix-blend-mode: screen;
+}
+.fx-alarm-text {
+  position: absolute; left: 50%; top: 22%; translate: -50% -50%; white-space: nowrap;
+  font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: clamp(20px, 4vh, 44px); letter-spacing: .14em; color: #fff;
+  padding: .35em 1.1em; border: 2px solid #ff3355; background: rgba(40,0,10,.72);
+  text-shadow: 0 0 8px #ff3355, 0 0 22px #ff3355; box-shadow: 0 0 24px rgba(255,51,85,.7), inset 0 0 18px rgba(255,51,85,.4);
+  background-image: repeating-linear-gradient(-45deg, rgba(255,51,85,.12) 0 10px, transparent 10px 20px);
+}
+.fx-alarm-icon { color: #ffb020; text-shadow: 0 0 10px #ffb020; }
+
+/* ---------- Newspaper ---------- */
+.fx-news-backdrop {
+  inset: 0; display: grid; place-items: center; pointer-events: auto; cursor: pointer; z-index: 8;
+  background: radial-gradient(ellipse at center, rgba(5,7,15,.55), rgba(5,7,15,.88));
+}
+.fx-news {
+  position: relative; width: min(680px, 86vw); max-height: 86vh; overflow: hidden; padding: 18px 26px 22px;
+  background: #ece3cc; color: #16130e; font-family: 'Special Elite', Georgia, serif;
+  background-image:
+    radial-gradient(ellipse at 20% 10%, rgba(255,255,255,.35), transparent 60%),
+    radial-gradient(ellipse at 80% 90%, rgba(120,90,40,.22), transparent 60%),
+    repeating-linear-gradient(0deg, rgba(0,0,0,.025) 0 1px, transparent 1px 3px);
+  box-shadow: 0 30px 80px rgba(0,0,0,.8), 0 0 0 1px rgba(0,0,0,.3), 0 0 60px rgba(255,43,214,.25);
+}
+.fx-news-top, .fx-news-rule { display: flex; justify-content: space-between; font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+.fx-news-mast {
+  font-family: 'Bebas Neue', Impact, sans-serif; font-size: clamp(40px, 7.2vh, 72px); text-align: center; letter-spacing: .06em; line-height: 1;
+  margin: 6px 0 4px; border-top: 3px double #16130e; border-bottom: 3px double #16130e; padding: 6px 0 2px;
+}
+.fx-news-rule { border-bottom: 1px solid #16130e; padding-bottom: 4px; margin-bottom: 10px; }
+.fx-news-rule span:first-child { background: #b0101e; color: #fff; padding: 0 6px; }
+.fx-news-head {
+  font-family: 'Bebas Neue', Impact, sans-serif; font-weight: 400; font-size: clamp(38px, 7.5vh, 76px); line-height: .92; margin: 4px 0 6px; text-transform: uppercase;
+}
+.fx-news-sub { font-family: Georgia, 'Times New Roman', serif; font-style: italic; font-weight: 400; font-size: clamp(14px, 2.1vh, 20px); margin: 0 0 12px; line-height: 1.25; }
+.fx-news-body { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 14px; border-top: 1px solid #16130e; padding-top: 10px; }
+.fx-news-photo {
+  min-height: 120px; position: relative; background-color: #333;
+  background-image: radial-gradient(circle, #111 35%, transparent 37%), linear-gradient(160deg, #888, #222 70%);
+  background-size: 5px 5px, 100% 100%; filter: contrast(1.3);
+}
+.fx-news-photo span { position: absolute; bottom: -16px; left: 0; font-family: 'Share Tech Mono', monospace; font-size: 9px; }
+.fx-news-col i { display: block; height: 6px; background: rgba(22,19,14,.55); margin: 0 0 6px; border-radius: 1px; }
+.fx-news-hint { position: absolute; right: 12px; bottom: 6px; font-family: 'Share Tech Mono', monospace; font-size: 10px; opacity: .55; }
+
+/* ---------- Neon title ---------- */
+.fx-neon {
+  --neon: #ff2bd6; color: #ffe9fb;
+  text-shadow: 0 0 2px #fff, 0 0 6px var(--neon), 0 0 14px var(--neon), 0 0 30px var(--neon), 0 0 60px var(--neon);
+  transition: opacity .05s linear, filter .2s;
+}
+.fx-neon .fx-neon-l { display: inline-block; transition: opacity .04s, text-shadow .04s; }
+.fx-neon.fx-neon-off { opacity: .25; text-shadow: none; }
+.fx-neon.fx-neon-dim { filter: brightness(.7) saturate(.8); }
+.fx-neon .fx-neon-l.fx-neon-dead { opacity: .18; text-shadow: none; color: #4a2246; }
+
+.fx-caret { animation: fx-blink .8s steps(1) infinite; color: currentColor; margin-left: 1px; }
+@keyframes fx-blink { 50% { opacity: 0; } }
+
+/* ---------- Route map ---------- */
+.fx-routemap { position: relative; width: 100%; height: 100%; min-height: 120px; overflow: hidden; border-radius: 6px;
+  background: #04060e; box-shadow: inset 0 0 0 1px rgba(25,240,255,.25), inset 0 0 40px rgba(25,240,255,.08); }
+.fx-routemap svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.fx-routemap .rm-grat line { stroke: #19f0ff; stroke-opacity: .07; stroke-width: 1; vector-effect: non-scaling-stroke; }
+.fx-routemap .rm-grat .rm-equator { stroke: #ff2bd6; stroke-opacity: .14; stroke-dasharray: 4 4; }
+.fx-routemap .rm-land path { fill: #0e1a3d; stroke: #2a5d8f; stroke-width: 1; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+.fx-routemap .rm-land path.rm-land-dots { fill: url(#rm-dots); stroke: none; opacity: .55; }
+.fx-routemap .rm-route-base { fill: none; stroke: #19f0ff; stroke-opacity: .12; stroke-linecap: round; }
+.fx-routemap .rm-route { fill: none; stroke: url(#rm-route); stroke-linecap: round; filter: url(#rm-glow); }
+.fx-routemap .rm-route.rm-risk { stroke: #ff3355; }
+.fx-routemap .rm-route-flow { fill: none; stroke: #fff; stroke-linecap: round; animation: rm-flow 1.2s linear infinite; opacity: .8; }
+@keyframes rm-flow { to { stroke-dashoffset: -24; } }
+.fx-routemap .rm-node .rm-dot { fill: #19f0ff; }
+.fx-routemap .rm-node .rm-core { fill: #fff; }
+.fx-routemap .rm-node .rm-ring { fill: none; stroke: #19f0ff; stroke-width: 1.2; vector-effect: non-scaling-stroke; }
+.fx-routemap .rm-node.rm-port .rm-dot { fill: #ff2bd6; }
+.fx-routemap .rm-node.rm-port .rm-ring { stroke: #ff2bd6; }
+.fx-routemap .rm-node.rm-risk .rm-dot { fill: #ff3355; }
+.fx-routemap .rm-node.rm-risk .rm-ring { stroke: #ff3355; stroke-width: 2; }
+.fx-routemap .rm-node.rm-risk { animation: rm-pulse .7s ease-in-out infinite alternate; }
+@keyframes rm-pulse { from { opacity: 1; } to { opacity: .55; } }
+.fx-routemap .rm-label text { font-family: 'Share Tech Mono', monospace; paint-order: stroke; stroke: #04060e; stroke-width: 3px; stroke-linejoin: round; }
+.fx-routemap .rm-t1 { fill: #bff9ff; letter-spacing: .04em; }
+.fx-routemap .rm-t2 { fill: #7fa6c9; }
+.fx-routemap .rm-label.rm-risk .rm-t1 { fill: #ff5a75; }
+.fx-routemap .rm-label.rm-risk .rm-t2 { fill: #ffb020; }
+.fx-routemap .rm-hud {
+  position: absolute; left: 8px; top: 6px; font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: .1em;
+  color: #19f0ff; text-shadow: 0 0 6px rgba(25,240,255,.6); pointer-events: none;
+}
+.fx-routemap .rm-hud.rm-hud-risk { color: #ff3355; text-shadow: 0 0 6px rgba(255,51,85,.8); }
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  #crt-overlay::after { animation: none; }
+  .fx-routemap .rm-route-flow, .fx-routemap .rm-node.rm-risk, .fx-caret { animation: none; }
+}
+html.reduced-motion #crt-overlay::after { animation: none; }
+html.reduced-motion .fx-routemap .rm-route-flow, html.reduced-motion .fx-routemap .rm-node.rm-risk, html.reduced-motion .fx-caret { animation: none; }

@@ -1,0 +1,7 @@
+.DS_Store
+node_modules/
+*.log
+_demo.html
+_test.html
+.env
+.claude/
