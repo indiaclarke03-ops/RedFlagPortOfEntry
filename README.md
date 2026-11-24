@@ -38,7 +38,7 @@ Some details look suspicious but are **legal**, for example a young firm with 40
 
 ### Scoring
 
-You're balancing **Port Revenue** (throughput) against **Integrity** (violations caught). Correct calls build a **combo multiplier**. A missed violation sets off a red alarm, and later an NGO exposé hits your reputation. A backed-up queue makes the Port Director dock your pay. Your final grade runs **Rookie → Junior Inspector → Inspector → Senior Inspector → Chief Inspector**, and initials go on the local **leaderboard** (stored in this browser only), so a class can compete on one machine.
+You're balancing **Port Revenue** (throughput) against **Integrity** (violations caught). Correct calls build a **combo multiplier**. A missed violation sets off a red alarm, and later an NGO exposé hits your reputation. A backed-up queue makes the Port Director dock your pay. Your final grade runs **Rookie → Junior Inspector → Inspector → Senior Inspector → Chief Inspector**. Speed-stamping racks up points, but Senior needs ≥85% accuracy and Chief needs ≥92% with no more than 3 misses. Your initials go on the local **leaderboard** (stored in this browser only), so a class can compete on one machine.
 
 ---
 

@@ -30,7 +30,13 @@ export function computeFinal(s) {
   if (n >= 10 && acc >= 0.85 && s.reputation >= 50) ga = 2;
   if (n >= 18 && acc >= 0.93 && s.reputation >= 70) ga = 3;
   if (n >= 26 && acc >= 0.97 && s.reputation >= 85) ga = 4;
-  const gi = Math.max(g, ga);
+  // Accuracy ceiling: speed-stamping racks up points, but top grades demand integrity.
+  const missed = s.stats.missed || 0;
+  let cap = 4;
+  if (acc < 0.92 || missed > 3) cap = 3;
+  if (acc < 0.85) cap = 2;
+  if (acc < 0.7) cap = 1;
+  const gi = Math.min(Math.max(g, ga), Math.max(cap, ga));
   return { score, revenuePts, repBonus, points: Math.round(s.points), accuracy: acc, grade: GRADES[gi], gradeIndex: gi };
 }
 
